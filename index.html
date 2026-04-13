@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简历管理门户</title>
+    <meta name="description" content="可维护、可编辑的个人简历与资料管理网站">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-theme="obsidian" data-motion="on" data-density="cozy">
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div class="noise-layer" aria-hidden="true"></div>
+    <div class="grid-layer" aria-hidden="true"></div>
+
+    <div class="app-shell">
+        <aside class="sidebar glass-panel">
+            <div class="brand-block">
+                <div class="brand-kicker">Resume Portal</div>
+                <h1>个人简历管理门户</h1>
+                <p>集中展示和维护个人经历、成果、奖项与图片资料。</p>
+            </div>
+
+            <nav class="nav-stack" aria-label="主导航">
+                <button class="nav-button active" data-view="dashboard">简历总览</button>
+                <button class="nav-button" data-view="knowledge">简历信息</button>
+                <button class="nav-button" data-view="content">内容维护</button>
+                <button class="nav-button" data-view="media">图片资料</button>
+                <button class="nav-button" data-view="help">帮助中心</button>
+                <button class="nav-button" data-view="settings">页面设置</button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="signal-card">
+                    <span>当前状态</span>
+                    <strong id="system-pulse">可维护</strong>
+                </div>
+                <div class="signal-card">
+                    <span>保存方式</span>
+                    <strong>浏览器本地存储</strong>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-shell">
+            <header class="topbar glass-panel">
+                <div class="topbar-copy">
+                    <span class="eyebrow">Personal Resume Site</span>
+                    <h2 id="view-title">简历总览</h2>
+                </div>
+
+                <div class="toolbar">
+                    <label class="search-field">
+                        <span>搜索</span>
+                        <input id="global-search" type="search" placeholder="搜索经历、奖项、论文、项目、标签">
+                    </label>
+
+                    <label class="filter-field">
+                        <span>分类</span>
+                        <select id="category-filter">
+                            <option value="all">全部</option>
+                            <option value="education">教育</option>
+                            <option value="honor">奖项</option>
+                            <option value="publication">成果</option>
+                            <option value="project">项目</option>
+                            <option value="experience">经历</option>
+                            <option value="role">角色</option>
+                            <option value="config">配置</option>
+                            <option value="help">帮助</option>
+                        </select>
+                    </label>
+
+                    <div class="action-row">
+                        <button class="primary-action" data-quick-action="add-module">新增模块</button>
+                        <button class="secondary-action" data-quick-action="add-entry">新增条目</button>
+                        <button class="secondary-action" data-quick-action="upload-image">上传图片</button>
+                        <button class="secondary-action" data-quick-action="export-data">导出数据</button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="view-stack">
+                <section class="view-panel active" data-view-panel="dashboard">
+                    <div id="dashboard-view"></div>
+                </section>
+
+                <section class="view-panel" data-view-panel="knowledge">
+                    <div id="knowledge-view"></div>
+                </section>
+
+                <section class="view-panel" data-view-panel="content">
+                    <div id="content-view"></div>
+                </section>
+
+                <section class="view-panel" data-view-panel="media">
+                    <div id="media-view"></div>
+                </section>
+
+                <section class="view-panel" data-view-panel="help">
+                    <div id="help-view"></div>
+                </section>
+
+                <section class="view-panel" data-view-panel="settings">
+                    <div id="settings-view"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-shell hidden" id="modal-shell">
+        <div class="modal-backdrop" data-close-modal="true"></div>
+        <div class="modal-panel glass-panel">
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow" id="modal-kicker">Editor</span>
+                    <h3 id="modal-title">编辑面板</h3>
+                </div>
+                <button class="icon-button" data-close-modal="true" aria-label="关闭">×</button>
+            </div>
+            <form id="modal-form" class="modal-form"></form>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toast-stack"></div>
+
+    <input id="avatar-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+    <input id="gallery-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+    <input id="import-input" type="file" accept="application/json,.json" hidden>
+
+    <script src="./app.js"></script>
+</body>
+</html>
