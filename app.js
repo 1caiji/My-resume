@@ -1,4 +1,5 @@
 const STORAGE_KEY = "future-nexus-portal:v1";
+const DATA_FILE_PATH = "./resume-data.json";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
@@ -28,14 +29,16 @@ const themeLabels = {
     oilpaint: "油画艺术",
 };
 
-const state = loadState();
+const state = createDefaultState();
 const ui = {
-    view: state.settings?.defaultView || "dashboard",
+    view: "dashboard",
     search: "",
     filter: "all",
     modal: null,
-    selectedModuleId: state.modules[0]?.id || null,
+    selectedModuleId: null,
     expandedEntries: new Set(),
+    publishedLoaded: false,
+    hasLocalDraft: false,
 };
 
 const els = {
@@ -63,9 +66,10 @@ const els = {
 
 init();
 
-function init() {
-    applySystemSettings();
+async function init() {
     bindStaticEvents();
+    await hydrateState();
+    applySystemSettings();
     render();
     startParticles();
 }
@@ -174,9 +178,9 @@ function renderDashboard() {
                         <div class="stat-tile stat-tile--date"><span>最近更新</span><strong>${escapeHTML(stats.lastUpdate)}</strong></div>
                     </div>
                     <div class="action-row" style="justify-content:flex-start;">
-                        <button class="primary-action" data-quick-action="add-entry">新增条目</button>
-                        <button class="secondary-action" data-quick-action="upload-image">上传图片</button>
-                        <button class="secondary-action" data-quick-action="export-data">导出数据</button>
+                        <button class="primary-action" data-quick-action="add-entry" aria-label="新增条目"><i class="fas fa-plus"></i></button>
+                        <button class="secondary-action" data-quick-action="upload-image" aria-label="上传图片"><i class="fas fa-upload"></i></button>
+                        <button class="secondary-action" data-quick-action="export-data" aria-label="导出数据"><i class="fas fa-download"></i></button>
                     </div>
                 </article>
 
@@ -200,13 +204,13 @@ function renderDashboard() {
                             `).join("") || `<div class="empty-state">没有匹配到相关内容，请换个关键词试试。</div>`}
                         </div>
                         <div class="inline-actions" style="margin-top:14px;">
-                            <button class="pill-button" data-go-view="knowledge">查看筛选后的简历信息</button>
-                            <button class="pill-button" data-go-view="content">查看可维护内容</button>
+                            <button class="pill-button" data-go-view="knowledge" aria-label="查看筛选后的简历信息"><i class="fas fa-file-alt"></i></button>
+                            <button class="pill-button" data-go-view="content" aria-label="查看可维护内容"><i class="fas fa-edit"></i></button>
                         </div>
                     </article>
                 ` : ""}
 
-                <div class="quick-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+                <div class="quick-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
                     ${featuredModules.map((module) => `
                         <article class="summary-card">
                             <div class="section-headline">
@@ -218,8 +222,8 @@ function renderDashboard() {
                             </div>
                             <p class="meta-text">${escapeHTML(module.description)}</p>
                             <div class="inline-actions" style="margin-top:14px;">
-                                <button class="pill-button" data-go-view="knowledge">浏览模块</button>
-                                <button class="pill-button" data-module-select="${module.id}" data-go-view="content">管理内容</button>
+                                <button class="pill-button" data-go-view="knowledge" aria-label="浏览模块"><i class="fas fa-eye"></i></button>
+                                <button class="pill-button" data-module-select="${module.id}" data-go-view="content" aria-label="管理内容"><i class="fas fa-cog"></i></button>
                             </div>
                         </article>
                     `).join("")}
@@ -299,9 +303,9 @@ function renderKnowledgeModule(module) {
                     <h4 style="margin-top:10px;">${escapeHTML(module.title)}</h4>
                 </div>
                 <div class="module-actions">
-                    <button class="module-action" data-module-collapse="${module.id}">${collapsedLabel}</button>
-                    <button class="module-action" data-edit-module="${module.id}">编辑</button>
-                    <button class="module-action" data-add-item-to="${module.id}">新增条目</button>
+                    <button class="module-action" data-module-collapse="${module.id}" aria-label="${collapsedLabel}"><i class="fas ${module.collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}"></i></button>
+                    <button class="module-action" data-edit-module="${module.id}" aria-label="编辑模块"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="module-action" data-add-item-to="${module.id}" aria-label="新增条目"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
             <p class="module-summary">${escapeHTML(module.description)}</p>
@@ -328,10 +332,10 @@ function renderEntryCard(item, module, mode) {
                     <p>${escapeHTML(item.subtitle || item.date || "未补充副标题")}</p>
                 </div>
                 <div class="inline-actions">
-                    ${canExpand ? `<button class="icon-action" data-item-expand="${item.id}">${expanded ? "折叠" : "展开"}</button>` : ""}
+                    ${canExpand ? `<button class="icon-action" data-item-expand="${item.id}" aria-label="${expanded ? '折叠' : '展开'}"><i class="fas ${expanded ? 'fa-chevron-up' : 'fa-chevron-down'}"></i></button>` : ""}
                     ${mode === "content" ? `
-                        <button class="icon-action" data-edit-item="${module.id}|${item.id}">编辑</button>
-                        <button class="icon-action" data-delete-item="${module.id}|${item.id}">删除</button>
+                        <button class="icon-action" data-edit-item="${module.id}|${item.id}" aria-label="编辑条目"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="icon-action" data-delete-item="${module.id}|${item.id}" aria-label="删除条目"><i class="fas fa-trash"></i></button>
                     ` : ""}
                 </div>
             </div>
@@ -368,7 +372,7 @@ function renderContent() {
                         <span class="eyebrow">Module List</span>
                         <h4>模块列表</h4>
                     </div>
-                    <button class="primary-action" data-quick-action="add-module">新增模块</button>
+                    <button class="primary-action" data-quick-action="add-module" aria-label="新增模块"><i class="fas fa-plus"></i></button>
                 </div>
                 <div class="module-list">
                     ${modules.map((module, index) => `
@@ -377,8 +381,8 @@ function renderContent() {
                             <p>${escapeHTML(module.description)}</p>
                             <div class="inline-actions" style="margin-top:10px;">
                                 <span class="module-badge">${escapeHTML(categoryLabels[module.category])}</span>
-                                <button class="icon-action" data-module-up="${module.id}" ${index === 0 ? "disabled" : ""}>上移</button>
-                                <button class="icon-action" data-module-down="${module.id}" ${index === modules.length - 1 ? "disabled" : ""}>下移</button>
+                                <button class="icon-action" data-module-up="${module.id}" ${index === 0 ? "disabled" : ""} aria-label="上移"><i class="fas fa-arrow-up"></i></button>
+                                <button class="icon-action" data-module-down="${module.id}" ${index === modules.length - 1 ? "disabled" : ""} aria-label="下移"><i class="fas fa-arrow-down"></i></button>
                             </div>
                         </div>
                     `).join("")}
@@ -393,9 +397,9 @@ function renderContent() {
                         <p class="meta-text">${escapeHTML(currentModule.description)}</p>
                     </div>
                     <div class="content-toolbar">
-                        <button data-edit-module="${currentModule.id}">编辑模块</button>
-                        <button data-add-item-to="${currentModule.id}">新增条目</button>
-                        <button data-delete-module="${currentModule.id}" class="danger">删除模块</button>
+                        <button class="icon-action" data-edit-module="${currentModule.id}" aria-label="编辑模块"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="icon-action" data-add-item-to="${currentModule.id}" aria-label="新增条目"><i class="fas fa-plus"></i></button>
+                        <button class="icon-action danger" data-delete-module="${currentModule.id}" aria-label="删除模块"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
                 <div class="summary-item" style="margin-bottom:14px;">
@@ -411,8 +415,8 @@ function renderContent() {
                                     <p>${escapeHTML(item.subtitle || item.date || "未补充副标题")}</p>
                                 </div>
                                 <div class="inline-actions">
-                                    <button class="icon-action" data-item-up="${currentModule.id}|${item.id}" ${index === 0 ? "disabled" : ""}>上移</button>
-                                    <button class="icon-action" data-item-down="${currentModule.id}|${item.id}" ${index === visibleItems.length - 1 ? "disabled" : ""}>下移</button>
+                                    <button class="icon-action" data-item-up="${currentModule.id}|${item.id}" ${index === 0 ? "disabled" : ""} aria-label="上移"><i class="fas fa-arrow-up"></i></button>
+                                    <button class="icon-action" data-item-down="${currentModule.id}|${item.id}" ${index === visibleItems.length - 1 ? "disabled" : ""} aria-label="下移"><i class="fas fa-arrow-down"></i></button>
                                 </div>
                             </div>
                             ${renderEntryCard(item, currentModule, "content")}
@@ -436,8 +440,8 @@ function renderMedia() {
                         <h4>头像与简介</h4>
                     </div>
                     <div class="inline-actions">
-                        <button class="primary-action" data-avatar-upload="true">上传头像</button>
-                        <button class="secondary-action" data-avatar-delete="true">删除头像</button>
+                        <button class="primary-action" data-avatar-upload="true" aria-label="上传头像"><i class="fas fa-upload"></i></button>
+                        <button class="secondary-action" data-avatar-delete="true" aria-label="删除头像"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
                 <div class="avatar-grid">
@@ -475,13 +479,13 @@ function renderMedia() {
                         <span class="eyebrow">Gallery</span>
                         <h4>照片上传与图库</h4>
                     </div>
-                    <button class="primary-action" data-gallery-upload="true">新增图片</button>
+                    <button class="primary-action" data-gallery-upload="true" aria-label="新增图片"><i class="fas fa-plus"></i></button>
                 </div>
                 <div class="upload-dropzone" data-upload-zone="gallery">
                     <strong>拖拽图片到这里，或点击按钮上传</strong>
                     <p class="meta-text">支持 JPG / PNG / WEBP / GIF，单张不超过 5MB。上传后立即预览，可替换、删除，并切换显示模式。</p>
                     <div class="inline-actions" style="justify-content:center;">
-                        <button class="upload-button" data-gallery-upload="true">选择图片</button>
+                        <button class="upload-button" data-gallery-upload="true" aria-label="选择图片"><i class="fas fa-upload"></i></button>
                     </div>
                 </div>
                 <div class="gallery-grid" style="margin-top:18px;">
@@ -502,7 +506,7 @@ function renderMedia() {
                                 </select>
                             </label>
                             <div class="inline-actions">
-                                <button class="icon-action danger" data-photo-delete="${photo.id}">删除</button>
+                                <button class="icon-action danger" data-photo-delete="${photo.id}" aria-label="删除图片"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     `).join("") || `<div class="empty-state">当前还没有上传图片，可以先上传头像或建立图库。</div>`}
@@ -525,7 +529,7 @@ function renderHelp() {
                         <span class="eyebrow">Guide</span>
                             <h4>${escapeHTML(module.title)}</h4>
                         </div>
-                        <button class="pill-button" data-edit-module="${module.id}">编辑说明</button>
+                        <button class="pill-button" data-edit-module="${module.id}" aria-label="编辑说明"><i class="fas fa-pencil-alt"></i></button>
                     </div>
                     <div class="faq-grid">
                         ${module.items.map((item) => `
@@ -587,9 +591,9 @@ function renderSettings() {
                                 <p class="meta-text">${escapeHTML(item.value)}</p>
                             </div>
                             ${item.key === "motionEnabled" ? `<button class="toggle ${item.active ? "active" : ""}" data-setting-toggle="${item.key}"></button>` : ""}
-                            ${item.key === "theme" ? `<button class="pill-button" data-setting-cycle="theme">切换主题</button>` : ""}
-                            ${item.key === "density" ? `<button class="pill-button" data-setting-cycle="density">切换密度</button>` : ""}
-                            ${item.key === "defaultView" ? `<button class="pill-button" data-setting-cycle="defaultView">切换默认页</button>` : ""}
+                            ${item.key === "theme" ? `<button class="pill-button" data-setting-cycle="theme" aria-label="切换主题"><i class="fas fa-palette"></i></button>` : ""}
+                            ${item.key === "density" ? `<button class="pill-button" data-setting-cycle="density" aria-label="切换密度"><i class="fas fa-compress-alt"></i></button>` : ""}
+                            ${item.key === "defaultView" ? `<button class="pill-button" data-setting-cycle="defaultView" aria-label="切换默认页"><i class="fas fa-home"></i></button>` : ""}
                         </div>
                     `).join("")}
                 </div>
@@ -618,6 +622,13 @@ function renderSettings() {
                 <div class="settings-list">
                     <div class="settings-item">
                         <div>
+                            <strong>公开站点数据源</strong>
+                            <p class="meta-text">${ui.publishedLoaded ? "当前站点支持从 resume-data.json 读取公开内容。" : "当前尚未检测到 resume-data.json，公开站点会回退到内置默认内容。"}</p>
+                        </div>
+                        <span class="module-badge">${ui.hasLocalDraft ? "本机有草稿" : "当前无草稿"}</span>
+                    </div>
+                    <div class="settings-item">
+                        <div>
                             <strong>导出知识库</strong>
                             <p class="meta-text">将全部模块、图片和设置导出为 JSON 文件。</p>
                         </div>
@@ -636,6 +647,38 @@ function renderSettings() {
                             <p class="meta-text">清空本地修改并恢复初始整理版本。</p>
                         </div>
                         <button class="secondary-action danger" data-quick-action="reset-data">重置</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="settings-card">
+                <div class="section-headline">
+                    <div>
+                        <span class="eyebrow">Publish</span>
+                        <h4>发布中心</h4>
+                    </div>
+                </div>
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div>
+                            <strong>公开站点数据源</strong>
+                            <p class="meta-text">${ui.publishedLoaded ? "当前站点支持从 `resume-data.json` 读取公开内容。" : "当前尚未检测到 `resume-data.json`，公开站点会回退到内置默认内容。"}</p>
+                        </div>
+                        <span class="module-badge">${ui.hasLocalDraft ? "本机有草稿" : "当前无草稿"}</span>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <strong>导出发布数据</strong>
+                            <p class="meta-text">导出为 resume-data.json。把它上传到 GitHub 仓库根目录后，公网简历会显示你最新发布的内容。</p>
+                        </div>
+                        <button class="secondary-action" data-quick-action="export-publish-data" aria-label="导出发布文件"><i class="fas fa-file-export"></i></button>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <strong>清空本机草稿</strong>
+                            <p class="meta-text">清除当前浏览器里的本地修改，并重新读取公开发布版本，方便核对别人看到的内容。</p>
+                        </div>
+                        <button class="secondary-action" data-quick-action="clear-local-draft" aria-label="清空草稿"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             </article>
@@ -676,10 +719,10 @@ function renderSettings() {
                                 </div>
                             </div>
                             <div class="action-row" style="justify-content:flex-start;">
-                                <button type="submit" class="primary-action">保存分享链接</button>
-                                <button type="button" class="secondary-action" data-export-share-page="true">导出分享页</button>
-                                <button type="button" class="secondary-action" data-copy-share-url="true" ${validShareUrl ? "" : "disabled"}>复制链接</button>
-                                <button type="button" class="secondary-action" data-open-share-url="true" ${validShareUrl ? "" : "disabled"}>预览链接</button>
+                                <button type="submit" class="primary-action" aria-label="保存分享链接"><i class="fas fa-check"></i></button>
+                                <button type="button" class="secondary-action" data-export-share-page="true" aria-label="导出分享页"><i class="fas fa-share-alt"></i></button>
+                                <button type="button" class="secondary-action" data-copy-share-url="true" ${validShareUrl ? "" : "disabled"} aria-label="复制链接"><i class="fas fa-copy"></i></button>
+                                <button type="button" class="secondary-action" data-open-share-url="true" ${validShareUrl ? "" : "disabled"} aria-label="预览链接"><i class="fas fa-external-link-alt"></i></button>
                             </div>
                         </div>
                     </div>
@@ -692,7 +735,7 @@ function renderSettings() {
                         <span class="eyebrow">Maintenance</span>
                         <h4>维护设置摘要</h4>
                     </div>
-                    ${configModule ? `<button class="pill-button" data-module-select="${configModule.id}" data-go-view="content">编辑配置中心</button>` : ""}
+                    ${configModule ? `<button class="pill-button" data-module-select="${configModule.id}" data-go-view="content" aria-label="编辑配置中心"><i class="fas fa-cog"></i></button>` : ""}
                 </div>
                 <div class="summary-list">
                     ${(configModule?.items || []).map((item) => `
@@ -757,8 +800,8 @@ function renderModuleForm(module) {
             </label>
         </div>
         <div class="form-actions">
-            <button type="button" class="secondary-action" data-close-modal="true">取消</button>
-            <button type="submit" class="primary-action">保存模块</button>
+            <button type="button" class="secondary-action" data-close-modal="true" aria-label="取消"><i class="fas fa-times"></i></button>
+            <button type="submit" class="primary-action" aria-label="保存模块"><i class="fas fa-check"></i></button>
         </div>
     `;
 }
@@ -790,8 +833,8 @@ function renderItemForm(module, item) {
             </label>
         </div>
         <div class="form-actions">
-            <button type="button" class="secondary-action" data-close-modal="true">取消</button>
-            <button type="submit" class="primary-action">保存条目</button>
+            <button type="button" class="secondary-action" data-close-modal="true" aria-label="取消"><i class="fas fa-times"></i></button>
+            <button type="submit" class="primary-action" aria-label="保存条目"><i class="fas fa-check"></i></button>
         </div>
     `;
 }
@@ -1051,8 +1094,16 @@ function handleQuickAction(action) {
         exportData();
         return;
     }
+    if (action === "export-publish-data") {
+        exportPublishData();
+        return;
+    }
     if (action === "import-data") {
         els.importInput.click();
+        return;
+    }
+    if (action === "clear-local-draft") {
+        clearLocalDraft();
         return;
     }
     if (action === "reset-data") {
@@ -1265,6 +1316,33 @@ function exportData() {
     link.click();
     URL.revokeObjectURL(url);
     toast("数据已导出。");
+}
+
+function exportPublishData() {
+    downloadFile(
+        "resume-data.json",
+        JSON.stringify(buildPublishState(), null, 2),
+        "application/json",
+    );
+    toast("已导出发布文件。上传到仓库根目录后，公网内容会更新。");
+}
+
+function buildPublishState() {
+    const normalized = normalizeState(state);
+    return {
+        profile: normalized.profile,
+        settings: normalized.settings,
+        modules: normalized.modules,
+    };
+}
+
+function clearLocalDraft() {
+    if (!window.confirm("确认清空当前浏览器中的本地草稿，并重新读取公开发布版本吗？")) {
+        return;
+    }
+    localStorage.removeItem(STORAGE_KEY);
+    ui.hasLocalDraft = false;
+    window.location.reload();
 }
 
 function exportSharePage() {
@@ -1732,18 +1810,58 @@ function updatePulse() {
 
 function persist() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    ui.hasLocalDraft = true;
 }
 
-function loadState() {
+async function hydrateState() {
+    const published = await loadPublishedState();
+    if (published) {
+        replaceState(published);
+        ui.publishedLoaded = true;
+    }
+
+    const localDraft = loadLocalDraft();
+    if (localDraft) {
+        replaceState(localDraft);
+        ui.hasLocalDraft = true;
+    }
+
+    syncUiState();
+}
+
+async function loadPublishedState() {
+    try {
+        const response = await fetch(DATA_FILE_PATH, { cache: "no-store" });
+        if (!response.ok) {
+            return null;
+        }
+        return normalizeState(await response.json());
+    } catch (error) {
+        return null;
+    }
+}
+
+function loadLocalDraft() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-        return createDefaultState();
+        return null;
     }
     try {
         return normalizeState(JSON.parse(raw));
     } catch (error) {
-        return createDefaultState();
+        return null;
     }
+}
+
+function replaceState(nextState) {
+    const normalized = normalizeState(nextState);
+    Object.keys(state).forEach((key) => delete state[key]);
+    Object.assign(state, normalized);
+}
+
+function syncUiState() {
+    ui.view = state.settings?.defaultView || "dashboard";
+    ui.selectedModuleId = state.modules[0]?.id || null;
 }
 
 function normalizeState(input) {

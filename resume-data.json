@@ -36,18 +36,59 @@
     "theme": "guofeng",
     "motionEnabled": true,
     "density": "cozy",
-    "defaultView": "dashboard",
+    "defaultView": "help",
     "shareUrl": ""
   },
   "modules": [
     {
+      "id": "ef74b993-a710-4176-b2d1-a6f527e34297",
+      "title": "教育经历",
+      "category": "education",
+      "description": "教育阶段",
+      "accent": "cyan",
+      "collapsed": false,
+      "updatedAt": "2026-04-14T07:12:48.131Z",
+      "items": [
+        {
+          "id": "346d3247-6ae9-465f-9579-4706e5cc2d9b",
+          "title": "本科：海南大学",
+          "subtitle": "管理学院",
+          "date": "2018.09-2022.06",
+          "status": "",
+          "description": "物流管理专业，主修课程：运筹学、管理信息系统、冷链物流、仓储管理、运营管理",
+          "tags": [],
+          "updatedAt": "2026-04-14T07:11:41.682Z"
+        },
+        {
+          "id": "3a571eb6-2323-4364-a99a-eb6df64b1fc6",
+          "title": "硕士：济南大学",
+          "subtitle": "管理科学与工程学院",
+          "date": "2022.09-2025.06",
+          "status": "",
+          "description": "研究方向：复杂网络、企业创新。在研究生阶段形成了竞赛获奖、论文发表、项目参与与学术编辑工作的多线程积累，并获得多项校级与国家级荣誉。",
+          "tags": [],
+          "updatedAt": "2026-04-14T07:11:28.752Z"
+        },
+        {
+          "id": "8260247e-4d21-451d-9170-033934774460",
+          "title": "博士：南京大学",
+          "subtitle": "商学院",
+          "date": "2025.09-至今",
+          "status": "",
+          "description": "2025年5月22日进入南京大学商学院攻读博士研究生，并于2025年9月担任南京大学产经一支部支委（组织委员）。<div>目前研究方向为AI和企业创新，冲击目标期刊中。</div><div>Fighting</div>",
+          "tags": [],
+          "updatedAt": "2026-04-14T07:12:48.131Z"
+        }
+      ]
+    },
+    {
       "id": "7df9f4a8-312e-4f4d-be46-27747d8c7100",
-      "title": "奖项与荣誉库",
+      "title": "奖学金、奖项和荣誉称号",
       "category": "honor",
-      "description": "将重复奖项统一标准化为唯一条目，形成可检索、可排序的荣誉台账。",
+      "description": "按时间记录相关奖励",
       "accent": "violet",
       "collapsed": false,
-      "updatedAt": "2026-04-12T13:07:21.137Z",
+      "updatedAt": "2026-04-14T07:16:58.183Z",
       "items": [
         {
           "id": "ee7385c5-f172-409e-81d3-4b4f80badebf",
@@ -57,10 +98,9 @@
           "status": "已整理",
           "description": "海南大学2020学年校二等奖学金。",
           "tags": [
-            "奖学金",
-            "海南大学"
+            "奖学金"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:14:22.639Z"
         },
         {
           "id": "4fa3b6f4-b6eb-4b6f-8631-d3e7cfa8fbd2",
@@ -70,9 +110,9 @@
           "status": "已整理",
           "description": "海南大学校优秀志愿者。",
           "tags": [
-            "志愿服务"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:14:34.403Z"
         },
         {
           "id": "823e642d-d2d2-4f8a-9dcc-ea6de7778a10",
@@ -82,9 +122,9 @@
           "status": "已整理",
           "description": "海南大学优秀共产党员。",
           "tags": [
-            "党建"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:14:54.555Z"
         },
         {
           "id": "c5e38090-3d62-4b7d-a5c2-1997f9788d90",
@@ -94,9 +134,9 @@
           "status": "已整理",
           "description": "海南大学管理学院2021学年上半年志愿案例分析大赛二等奖。",
           "tags": [
-            "竞赛"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:15:05.998Z"
         },
         {
           "id": "2c7eb88a-8fab-4fde-a82f-6d7c22823b80",
@@ -106,9 +146,9 @@
           "status": "已整理",
           "description": "海南大学2020年暑期社会实践积极分子。",
           "tags": [
-            "社会实践"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:15:28.621Z"
         },
         {
           "id": "b0f9e3f5-ed07-4955-8f93-2f7ea9ac3bca",
@@ -118,10 +158,9 @@
           "status": "已整理",
           "description": "济南大学入学二等奖学金。",
           "tags": [
-            "奖学金",
-            "济南大学"
+            "奖学金"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:15:41.290Z"
         },
         {
           "id": "9ae619b6-33a3-4312-9777-2f8fa97f1df8",
@@ -131,10 +170,9 @@
           "status": "高亮",
           "description": "“正大杯”第十三届全国大学生市场调查与分析大赛山东省一等奖。",
           "tags": [
-            "竞赛",
-            "省级"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:15:49.964Z"
         },
         {
           "id": "1ff1c4d5-72a0-4f3e-8178-f66884cc6387",
@@ -144,9 +182,9 @@
           "status": "已整理",
           "description": "“挑战杯”全国大学生课外学术科技作品竞赛山东省济南大学校一等奖。",
           "tags": [
-            "竞赛"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:15:56.639Z"
         },
         {
           "id": "6ff15cbc-2ede-4dc8-9efc-905ce620a374",
@@ -156,9 +194,9 @@
           "status": "已整理",
           "description": "第十二届中国知识产权年会优秀志愿者。",
           "tags": [
-            "志愿服务"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:04.199Z"
         },
         {
           "id": "73b52bf7-191a-4d12-a0f1-521658d50d77",
@@ -192,9 +230,9 @@
           "status": "已整理",
           "description": "济南大学管理科学与工程学院学术沙龙比赛一等奖。",
           "tags": [
-            "学术论坛"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:18.189Z"
         },
         {
           "id": "87d6d7d6-af22-44eb-b860-ef73994253a2",
@@ -228,10 +266,9 @@
           "status": "高亮",
           "description": "研究生国家奖学金。",
           "tags": [
-            "国家级",
             "奖学金"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:29.397Z"
         },
         {
           "id": "bdbf1dc3-ae65-4555-8fac-10b085244dee",
@@ -241,9 +278,9 @@
           "status": "已整理",
           "description": "济南大学校优秀毕业生。",
           "tags": [
-            "毕业荣誉"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:37.237Z"
         },
         {
           "id": "3d184820-2eb1-4354-aa22-93a2b34bbf1c",
@@ -253,9 +290,9 @@
           "status": "已整理",
           "description": "济南大学校级榜样繁星。",
           "tags": [
-            "榜样荣誉"
+            "荣誉称号"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:45.473Z"
         },
         {
           "id": "9e567a3d-1df0-4685-ae77-c632b7f677db",
@@ -265,9 +302,9 @@
           "status": "高亮",
           "description": "济南大学校优秀毕业论文。",
           "tags": [
-            "毕业论文"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:52.130Z"
         },
         {
           "id": "367e9684-0b17-485e-b223-c56dd27675b4",
@@ -277,59 +314,9 @@
           "status": "高亮",
           "description": "江苏省社科界第十九届学术大会参会论文一等奖。",
           "tags": [
-            "论文奖"
+            "奖项"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
-        }
-      ]
-    },
-    {
-      "id": "ef74b993-a710-4176-b2d1-a6f527e34297",
-      "title": "教育与进阶路径",
-      "category": "education",
-      "description": "聚合本科、研究生与博士阶段的关键节点，构成当前学业主线。",
-      "accent": "cyan",
-      "collapsed": false,
-      "updatedAt": "2026-04-12T14:31:41.697Z",
-      "items": [
-        {
-          "id": "346d3247-6ae9-465f-9579-4706e5cc2d9b",
-          "title": "海南大学本科阶段",
-          "subtitle": "本科经历与奖项基础",
-          "date": "本科期间",
-          "status": "归档",
-          "description": "围绕校级奖学金、志愿服务、学生组织与财务助理工作积累了最初的组织与管理经验。",
-          "tags": [
-            "本科",
-            "海南大学"
-          ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
-        },
-        {
-          "id": "3a571eb6-2323-4364-a99a-eb6df64b1fc6",
-          "title": "济南大学研究生阶段",
-          "subtitle": "竞赛、奖学金、论文与编辑部工作同步推进",
-          "date": "2022.09-2025.05",
-          "status": "主线",
-          "description": "在研究生阶段形成了竞赛获奖、论文发表、项目参与与学术编辑工作的多线程积累，并获得多项校级与国家级荣誉。",
-          "tags": [
-            "研究生",
-            "济南大学"
-          ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
-        },
-        {
-          "id": "8260247e-4d21-451d-9170-033934774460",
-          "title": "南京大学商学院博士阶段",
-          "subtitle": "博士研究生",
-          "date": "2025.05-至今",
-          "status": "进行中",
-          "description": "2025年5月22日进入南京大学商学院攻读博士研究生，并于2025年9月担任南京大学产经一支部支委（组织委员）。",
-          "tags": [
-            "博士",
-            "南京大学"
-          ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:16:58.183Z"
         }
       ]
     },
@@ -337,10 +324,10 @@
       "id": "bb1ca824-5989-45a8-bbc2-db2c9262a4ab",
       "title": "论文与学术成果",
       "category": "publication",
-      "description": "统一收纳已提供的中英文论文成果，支持后续继续扩充。",
-      "accent": "amber",
+      "description": "统一收纳已提供的中英文论文成果，扩充中...",
+      "accent": "violet",
       "collapsed": false,
-      "updatedAt": "2026-04-12T13:26:30.224Z",
+      "updatedAt": "2026-04-14T07:24:36.569Z",
       "items": [
         {
           "id": "42e3f0c6-d11c-466c-94f7-f8398d849b10",
@@ -348,13 +335,12 @@
           "subtitle": "Environ Dev Sustain",
           "date": "2026",
           "status": "最新",
-          "description": "Ren, Y., Yuan, P. & Dong, X. Before the rain falls: corporate climate risk perception and supply chain stability. Environ Dev Sustain (2026). https://doi.org/10.1007/s10668-026-07323-3",
+          "description": "Ren, Y., Yuan, P. &amp; Dong, X. Before the rain falls: corporate climate risk perception and supply chain stability. Environ Dev Sustain (2026). https://doi.org/10.1007/s10668-026-07323-3",
           "tags": [
-            "英文论文",
-            "供应链",
-            "气候风险"
+            "JCR Q2",
+            "中科院三区"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:22:13.814Z"
         },
         {
           "id": "47c2e337-1dfe-4c17-a31e-fc7f9bee2146",
@@ -364,11 +350,11 @@
           "status": "核心成果",
           "description": "Ren Y, Yuan P, Dong X, et al. How to prevent “greenwash” in green retrofit process under PPP model: An evolutionary game theory-based analysis[J]. Applied Economics, 2025, 57(16): 1888-1908.",
           "tags": [
-            "英文论文",
-            "PPP",
-            "绿色改造"
+            "JCR Q2",
+            "中科院三区",
+            "ABS 2星"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:23:13.273Z"
         },
         {
           "id": "2960bcce-eee9-4993-88c7-557dc7200af2",
@@ -378,10 +364,9 @@
           "status": "核心成果",
           "description": "袁朋伟, 任缘, 董晓庆. 良师益友：企业ESG表现的区域同群效应[J]. 重庆大学学报(社会科学版), 2025, 31(04):76-95.",
           "tags": [
-            "中文论文",
-            "ESG"
+            "CSSCI"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:23:31.311Z"
         },
         {
           "id": "e41f5868-25fb-4060-b4e8-fae8037c641a",
@@ -391,10 +376,9 @@
           "status": "核心成果",
           "description": "袁朋伟, 任缘, 董晓庆. 公共数据要素开放与企业组织韧性[J]. 财经论丛(浙江财经大学学报), 2025,(09):28-38.",
           "tags": [
-            "中文论文",
-            "组织韧性"
+            "CSSCI"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:23:50.135Z"
         },
         {
           "id": "9051238e-11f1-4608-9bdc-4a374767b55b",
@@ -404,10 +388,9 @@
           "status": "已发表",
           "description": "董晓庆, 袁朋伟, 任缘. 因果必然还是无奈之举：管理者短视与创新模式选择[J]. 珞珈管理评论, 2024,(04):46-71.",
           "tags": [
-            "中文论文",
-            "创新"
+            "CSSCI辑刊"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:24:11.284Z"
         },
         {
           "id": "e4a3021d-e94c-4a2f-b8bf-6451e5a292e8",
@@ -417,10 +400,9 @@
           "status": "已发表",
           "description": "袁朋伟, 董晓庆, 任缘. 产业链绿色技术创新的同群效应研究[J]. 郑州大学学报(哲学社会科学版), 2024,57(01):50-58+143.",
           "tags": [
-            "中文论文",
-            "绿色技术"
+            "CSSCI"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:24:22.551Z"
         },
         {
           "id": "d6ea8618-b3e4-4a93-9243-07c2c86d875c",
@@ -430,23 +412,33 @@
           "status": "已发表",
           "description": "Dong X, Cheng G, Ren Y. Going Green on the Government’s Dime: Unpacking the Subsidy Boost in Family Firms[J]. Sustainability, 2025, 17(10): 4547. https://doi.org/10.3390/su17104547",
           "tags": [
-            "英文论文",
-            "补贴",
-            "家族企业"
+            "JCR Q1"
           ],
-          "updatedAt": "2026-04-12T13:07:21.138Z"
+          "updatedAt": "2026-04-14T07:24:36.569Z"
         }
       ]
     },
     {
       "id": "55135510-8c3b-426f-a815-910d468b6e85",
-      "title": "科研项目档案",
+      "title": "科研项目",
       "category": "project",
-      "description": "聚焦已提供的国家社科基金、自然科学基金与省级项目条目。",
+      "description": "聚焦参与的国家社科基金、自然科学基金与省级项目条目。",
       "accent": "cyan",
       "collapsed": false,
-      "updatedAt": "2026-04-12T13:55:36.634Z",
+      "updatedAt": "2026-04-14T07:27:32.864Z",
       "items": [
+        {
+          "id": "afcab49c-0f76-4c6b-9fe8-578e38b00ca8",
+          "title": "可信数据空间赋能山东战略性新兴产业链融通创新研究",
+          "subtitle": "山东省社会科学规划研究项目",
+          "date": "批准号25CGLJ04",
+          "status": "",
+          "tags": [
+            "山东省社会科学规划研究项目"
+          ],
+          "description": "可信数据空间赋能山东战略性新兴产业链融通创新研究",
+          "updatedAt": "2026-04-14T07:27:32.864Z"
+        },
         {
           "id": "9e3c58e8-081e-4601-8bb3-1ee85b44f063",
           "title": "竞争性国企创新效率损失及优化对策研究",
